@@ -2,14 +2,19 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+```bash
+cd ai-transcriber-next-js
+npm install
+cp .env.example .env
+# Edit the .env file with valid API keys
+```
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+
+Build for production:
+
+```bash
+npm run build
 ```

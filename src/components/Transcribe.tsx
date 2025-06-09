@@ -178,6 +178,7 @@ export default function Transcribe({name,email,id}:UserDetails) {
                 type="text"
                 placeholder="Enter your API key"
                 className="border-2 font-normal bg-white ml-4 border-slate-600 text-lg px-4 py-[2px] rounded-md"
+                //@ts-ignore
                 style={{ WebkitTextSecurity: 'disc' }}
                 />
                 </div>
