@@ -5,10 +5,11 @@ import path from "path";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { filename: string } }
+  { params }: { params: { [key: string]: string  } }
 ) {
   try {
-    console.log("read")
+    await params.filename as string;
+    
     const filePath = path.join(process.cwd(), "tmp", "downloads", params.filename);
 
     // Read file into memory
