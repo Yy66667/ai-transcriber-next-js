@@ -75,9 +75,7 @@ export default function PromptUploader({promptRef }: PromptUploaderProps){
           className="w-74 absolute left-3 bg-white bottom-[14px] items-center border-slate-200 gap-20 justify-center py-[10px] border-2 rounded-lg cursor-pointer transition-colors"
         >
           <span className="flex relative bg-white flex-row items-center justify-center gap-2 text-[18px]">
-            {promptFile ? (
-              promptFile.name
-            ) : (
+           
               <div className=" inline-block group">
                   <p className="text-gray-600 bg-white cursor-pointer">
                     Click to upload prompt
@@ -87,7 +85,7 @@ export default function PromptUploader({promptRef }: PromptUploaderProps){
                   </span>
               </div>
 
-            )}
+
             <input
               id="prompt-file-upload"
               ref={fileInputRef}
