@@ -273,7 +273,7 @@ export default function Transcribe({name,email,id}:UserDetails) {
       {downloadUrl && (
         <div className="mt-2 absolute top-0 right-[-170px] ">
           <a
-            href={`http://localhost:3000${downloadUrl}`}
+            href={`${process.env.NEXTAUTH_URL}${downloadUrl}`}
             download
             target="_blank"
             rel="noopener noreferrer"
