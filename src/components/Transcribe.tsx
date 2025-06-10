@@ -11,6 +11,7 @@ import Button from "./generateButton";
 import DownloadButton from "./downloadButton";
 import CLoader from "./componentLoading";
 import uploadSvg from "../assets/upload.svg"; // Adjust path if needed
+import LogoutButton from "./Logout";
 
 interface UserDetails {
     name : string | null | undefined,
@@ -55,6 +56,8 @@ export default function Transcribe({name,email,id}:UserDetails) {
     setTranscript("");
     setDownloadUrl("");
 
+    await deleteOldDownloads();
+    
     try {
       const formData = new FormData();
       formData.append("audio", audioFile);
@@ -77,12 +80,52 @@ export default function Transcribe({name,email,id}:UserDetails) {
       const data = await response.json();
       setTranscript(data.result || "");
       setDownloadUrl(data.downloadUrl || "");
+
+      const filename = data.downloadUrl;
+
+      const downloads = JSON.parse(localStorage.getItem("allDownloads") || "[]");
+
+      downloads.push(filename);
+
+      localStorage.setItem("allDownloads", JSON.stringify(downloads));
+
     } catch (err) {
       setError("Network error. Please try again.");
     } finally {
       setLoading(false);
     }
   };
+
+
+  const deleteOldDownloads = async (): Promise<void> => {
+      
+    type DeleteFilePayload = {
+        filename: string;
+      };
+
+      const allDownloads: string[] = JSON.parse(
+        localStorage.getItem('allDownloads') || '[]'
+      );
+
+      for (const filename of allDownloads) {
+        try {
+          const res = await fetch("/api/delete-download", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ path: filename }),
+              });
+
+          if (!res.ok) {
+            console.warn(`Failed to delete ${filename}:`, await res.text());
+          }
+        } catch (err) {
+          console.error(`Error deleting ${filename}:`, err);
+        }
+      }
+
+      localStorage.removeItem('allDownloads');
+    };
+
 
   const models = [
     "gemini-2.5-pro-exp-03-25",
@@ -186,14 +229,17 @@ export default function Transcribe({name,email,id}:UserDetails) {
                             <button className="cursor-pointer border-1 font-normal bg-white border-slate-600 text-lg px-3 active:bg-gray-400 hover:bg-gray-300 py-[-1px] rounded-md" onClick={go}>go</button>
 
                         </div>
-                        
-               </div>
-                
+                </div>    
               </div>
        
-        <h1 className="text-2xl font-semibold mb-6 text-slate-800">
-          Audio Transcription
+      
+       <div className="flex bg-gray-900 items-center gap-20 ">
+       <h1 className="text-2xl font-semibold mb-6 text-slate-800">
+        Audio Transcription    
         </h1>
+        <LogoutButton />
+        </div>
+
         
         <form
           onSubmit={handleSubmit}
@@ -243,9 +289,9 @@ export default function Transcribe({name,email,id}:UserDetails) {
           >
             {loading ? <Loader /> : <Button />}
           </button>
+          
         </form>
       </div>
-
     
 
       {/* Display transcript and other UI here as needed */}
@@ -273,12 +319,12 @@ export default function Transcribe({name,email,id}:UserDetails) {
       {downloadUrl && (
         <div className="mt-2 absolute top-0 right-[-170px] ">
           <a
-            href={`${process.env.NEXTAUTH_URL}${downloadUrl}`}
+            href={`${downloadUrl}`}
             download
             target="_blank"
             rel="noopener noreferrer"
             className=""
-          ><DownloadButton text="download" />
+          ><DownloadButton  text="download" />
           </a>
           <CopyButton targetRef={transcriptRef}/>
         </div>
@@ -287,3 +333,4 @@ export default function Transcribe({name,email,id}:UserDetails) {
     </div>
   );
 }
+
