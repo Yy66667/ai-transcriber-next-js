@@ -141,7 +141,7 @@ export async function POST(request: Request) {
 
     // Save docx file to public/downloads
     const fileId = uuidv4();
-    const outputDir = path.join(process.cwd(), "public", "downloads");
+    const outputDir = path.join(process.cwd(), "tmp", "downloads");
     if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
 
     const docxPath = path.join(outputDir, `${fileId}.docx`);
@@ -152,7 +152,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       result: transcriptText,
-      downloadUrl: `/downloads/${fileId}.docx`,
+      downloadUrl: `api/download/${fileId}.docx`,
     });
   } catch (error) {
     console.error("Error in transcription API:", error);

@@ -8,14 +8,16 @@ export async function POST(req: NextRequest) {
     const filePath = body?.path;
 
     // Validate input
-    if (!filePath || typeof filePath !== "string" || !filePath.startsWith("/downloads/")) {
+    if (!filePath || typeof filePath !== "string" || !filePath.startsWith("api/download")) {
       return NextResponse.json(
         { success: false, error: "Invalid or unauthorized file path" },
         { status: 400 }
       );
+    
     }
 
-    const fullPath = path.join(process.cwd(), "public", filePath);
+    const filename = filePath.split('/').pop();
+    const fullPath = path.join(process.cwd(), "tmp","downloads", filename!);
 
     await unlink(fullPath);
 
