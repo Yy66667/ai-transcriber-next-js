@@ -74,6 +74,8 @@ export async function POST(request: Request) {
       },
     });
 
+    console.log("reached here //1")
+
     // Generate transcription
     const response = await genAI.models.generateContent({
       model: SelectModel,
@@ -132,6 +134,8 @@ export async function POST(request: Request) {
         },
       ],
     });
+
+    console.log("reached here //2")
 
     const docBuffer = await Packer.toBuffer(doc);
 
