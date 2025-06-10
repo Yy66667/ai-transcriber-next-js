@@ -219,7 +219,7 @@ export default function Transcribe({name,email,id}:UserDetails) {
                 ref={GeminiAPIref}
                 autoComplete="off"
                 type="text"
-                placeholder="Enter your API key"
+                placeholder="Gemini API key"
                 className="border-2 font-normal bg-white ml-4 border-slate-600 text-lg px-4 py-[2px] rounded-md"
                 //@ts-ignore
                 style={{ WebkitTextSecurity: 'disc' }}
