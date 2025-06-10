@@ -233,7 +233,7 @@ export default function Transcribe({name,email,id}:UserDetails) {
               </div>
        
       
-       <div className="flex bg-gray-900 items-center gap-20 ">
+       <div className="flex items-center gap-20 ">
        <h1 className="text-2xl font-semibold mb-6 text-slate-800">
         Audio Transcription    
         </h1>
